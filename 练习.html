@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <div class="box">
+
+    </div>
+    <p onclick=hello>heloo</p>
+    <input type="text">
+    <p>在这里</p>
+</body>
+<style>
+    .box {
+        height: 200px;
+        background-color: pink;
+    }
+</style>
+<script>
+    let box = document.querySelector(".box")
+    let box2 = document.getElementsByTagName('input')[0]
+    let box3 = document.getElementsByTagName('p')[1]
+    console.dir(box)
+    console.dir(box2)
+
+    var abcd = setTimeout(function () {
+        console.log('对象在哪里呢')
+    }, 9000)
+
+
+    box3.onclick = function () {
+        console.log(abcd)
+    }
+    box2.onclick = debounce(function () {
+        console.log(8111188)
+    }, 2000)
+    box.onmousemove = debounce(move, 2000);
+    let abc = debounce(function () {
+        console.log(8111188)
+    }, 2000)
+    // function hello (){
+    //     debounce(function(){
+    //         console.log(8111188)
+    //     },2000)()
+    // }
+    function move(e, a) {
+        box.innerHTML = `${e.clientX},${e.clientY}`;
+        console.log("希望执向事件对象", this)
+
+    }
+
+    //简单版本的防抖函数
+    function debounce(fn, wait) {
+        let timmer = null;
+        return function (e) {
+            let now = !timmer
+            timmer && clearTimeout(timmer);
+            timmer = setTimeout(() => {
+                timmer = null
+                // fn()
+                // console.log('定时器里面的this',this)
+                // console.log(e);
+                // console.log(arguments)
+                // fn.apply(this, arguments);
+
+            }, wait)
+            if (now) {
+                fn.apply(this, arguments)
+            }
+        }
+    }
+
+    //节流函数
+    function jl(fn, wait) {
+        let timmer = null;
+        return function () {
+            var args = arguments;
+            if (!timmer) {
+                timmer = setTimeout(() => {
+                    timmer = null;
+                    fn.apply(this, args)
+                })
+            }
+        }
+    }
+    //上面的函数定时器没清理
+    //下面优化版本
+    function jl2(fn, wait) {
+        let last = 0;
+        return function () {
+            var args = arguments;
+            var now = Date.now();
+            if (now - last > wait) {
+                fn.apply(this, args);
+                last = now
+            }
+        }
+    }
+
+
+
+</script>
+
+</html>
